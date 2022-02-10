@@ -1,0 +1,15 @@
+package consts
+
+const (
+	EPM_MAIL_GUN_SERVICE        = "EPM_MAIL_GUN_SERVICE"
+	BS_NFT_ORIGIN_SERVICE       = "BS_NFT_ORIGIN_SERVICE"
+	BS_NFT_ITEM_SERVICE         = "BS_NFT_ITEM_SERVICE"
+	BS_NFT_ITEM_MAPPING_SERVICE = "BS_NFT_ITEM_MAPPING_SERVICE"
+	BS_NFT_USER_SERVICE         = "BS_NFT_USER_SERVICE"
+	BS_NFT_EVENT_SERVICE        = "BS_NFT_EVENT_SERVICE"
+
+	ENV_DEV_K8S  = "dev_k8s"
+	ENV_PROD_K8S = "prod_k8s"
+
+	PATH_CONFIG_FILE_LOCAL_DEV = "/home/dieptv/GolandProjects/worker-transaction/conf/app_dev.conf"
+)

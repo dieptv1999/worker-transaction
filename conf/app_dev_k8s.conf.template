@@ -1,0 +1,106 @@
+
+httphost = {{DEFAULT_HTTPHOST}}
+env = {{DEFAULT_ENV}}
+issession = {{DEFAULT_ISSESSION}}
+timecache = {{DEFAULT_TIMECACHE}}
+gethpool = {{DEFAULT_GETHPOOL}}
+bnbrpcs = {{DEFAULT_BNBRPCS}}
+duration = {{DEFAULT_DURATION}}
+copyrequestbody = {{DEFAULT_COPYREQUESTBODY}}
+wkPoolBsc = {{DEFAULT_WKPOOLBSC}}
+numRetry = {{DEFAULT_NUMRETRY}}
+bscrpc = {{DEFAULT_BSCRPC}}
+httpport = {{DEFAULT_HTTPPORT}}
+
+[nft_thrift_service]
+host = {{NFT_THRIFT_SERVICE_HOST}}
+port = {{NFT_THRIFT_SERVICE_PORT}}
+
+[mail]
+password = {{MAIL_PASSWORD}}
+user = {{MAIL_USER}}
+
+[nft]
+salecontractaddress721 = {{NFT_SALECONTRACTADDRESS721}}
+auctioncontractaddress721 = {{NFT_AUCTIONCONTRACTADDRESS721}}
+badgescontractaddress721 = {{NFT_BADGESCONTRACTADDRESS721}}
+mintcontractaddress721 = {{NFT_MINTCONTRACTADDRESS721}}
+
+[etcd]
+host = {{ETCD_HOST}}
+
+[redis]
+pw = {{REDIS_PW}}
+host = {{REDIS_HOST}}
+
+[sessionservice]
+sid = {{SESSIONSERVICE_SID}}
+host = {{SESSIONSERVICE_HOST}}
+port = {{SESSIONSERVICE_PORT}}
+
+[pubkey2uid]
+sid = {{PUBKEY2UID_SID}}
+host = {{PUBKEY2UID_HOST}}
+port = {{PUBKEY2UID_PORT}}
+
+[nft_marketplace]
+port = {{NFT_MARKETPLACE_PORT}}
+sid = {{NFT_MARKETPLACE_SID}}
+host = {{NFT_MARKETPLACE_HOST}}
+
+[nft_item]
+sid = {{NFT_ITEM_SID}}
+host = {{NFT_ITEM_HOST}}
+port = {{NFT_ITEM_PORT}}
+
+[nft_item_mapping]
+sid = {{NFT_ITEM_MAPPING_SID}}
+host = {{NFT_ITEM_MAPPING_HOST}}
+port = {{NFT_ITEM_MAPPING_PORT}}
+
+[nft_user]
+host = {{NFT_USER_HOST}}
+port = {{NFT_USER_PORT}}
+sid = {{NFT_USER_SID}}
+
+[nft_event]
+sid = {{NFT_EVENT_SID}}
+host = {{NFT_EVENT_HOST}}
+port = {{NFT_EVENT_PORT}}
+
+[kvcounter]
+sid = {{KVCOUNTER_SID}}
+host = {{KVCOUNTER_HOST}}
+port = {{KVCOUNTER_PORT}}
+
+[mail_gun_service]
+port = {{MAIL_GUN_SERVICE_PORT}}
+protocol = {{MAIL_GUN_SERVICE_PROTOCOL}}
+sid = {{MAIL_GUN_SERVICE_SID}}
+host = {{MAIL_GUN_SERVICE_HOST}}
+
+[elasticsearch]
+username = {{ELASTICSEARCH_USERNAME}}
+indexusers = {{ELASTICSEARCH_INDEXUSERS}}
+indexevents = {{ELASTICSEARCH_INDEXEVENTS}}
+indexreports = {{ELASTICSEARCH_INDEXREPORTS}}
+indexauctions = {{ELASTICSEARCH_INDEXAUCTIONS}}
+nftbids = {{ELASTICSEARCH_NFTBIDS}}
+urls = {{ELASTICSEARCH_URLS}}
+password = {{ELASTICSEARCH_PASSWORD}}
+indexitems = {{ELASTICSEARCH_INDEXITEMS}}
+indexcollections = {{ELASTICSEARCH_INDEXCOLLECTIONS}}
+
+[kafka]
+protocol = {{KAFKA_PROTOCOL}}
+brokers = {{KAFKA_BROKERS}}
+
+[kafka_consumer]
+host = {{KAFKA_CONSUMER_HOST}}
+port = {{KAFKA_CONSUMER_PORT}}
+topic = {{KAFKA_CONSUMER_TOPIC}}
+
+[kafka_producer]
+host = {{KAFKA_PRODUCER_HOST}}
+port = {{KAFKA_PRODUCER_PORT}}
+topic = {{KAFKA_PRODUCER_TOPIC}}
