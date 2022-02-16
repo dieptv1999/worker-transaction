@@ -5,4 +5,5 @@ type WithdrawalRequest struct {
 	Chain     string `json:"chain" xml:"chain"`
 	Amount    string `json:"amount" xml:"amount"`
 	ToAddress string `json:"to_address" xml:"to_address"`
+	Type      string `json:"type" xml:"type"`
 }

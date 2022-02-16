@@ -2,9 +2,6 @@ package blockchainservice
 
 import (
 	"encoding/hex"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
 	"log"
 	"math/big"
 	"strings"
@@ -13,6 +10,10 @@ import (
 	"worker-transaction/contracts/erc20"
 	"worker-transaction/helps"
 	"worker-transaction/restapi/responses"
+
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 var (
