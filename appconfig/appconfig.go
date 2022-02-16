@@ -2,9 +2,10 @@ package appconfig
 
 import (
 	"fmt"
-	beego "github.com/beego/beego/v2/server/web"
 	"log"
 	"worker-transaction/helps"
+
+	beego "github.com/beego/beego/v2/server/web"
 )
 
 //go:generate easytags $GOFILE json,xml
@@ -13,6 +14,8 @@ type AppConfig struct {
 	EtcdServerEndpoints []string `json:"etcd_server_endpoints" xml:"etcd_server_endpoints"`
 	BnbRPC              string   `json:"bnb_rpc" xml:"bnb_rpc"`
 	BnbRPCS             []string `json:"bnb_rpcs" xml:"bnb_rpcs"`
+	PolygonRPC          string   `json:"polygon_rpc" xml:"polygon_rpc"`
+	PolygonRPCs         []string `json:"polygon_rpcs" xml:"polygon_rpcs"`
 	PoolCap             int      `json:"pool_cap" xml:"pool_cap"`
 	WkPoolBsc           int      `json:"wk_pool_bsc" xml:"wk_pool_bsc"`
 	NumRetry            int      `json:"num_retry" xml:"num_retry"`
@@ -102,6 +105,8 @@ type AppConfig struct {
 
 	KafkaBrokers  []string `json:"kafka_brokers" xml:"kafka_brokers"`
 	KafkaProtocol string   `json:"kafka_protocol" xml:"kafka_protocol"`
+
+	NumPoolDepositWithdrawal int `json:"num_pool" xml:"num_pool"`
 }
 
 var Config *AppConfig
@@ -124,6 +129,8 @@ func LoadInitConfig() {
 	fmt.Println("[MAIN_LOAD]: Etcd servers:", config.EtcdServerEndpoints)
 	config.BnbRPC, _ = beego.AppConfig.String("default::bscrpc")
 	config.BnbRPCS, _ = beego.AppConfig.Strings("default::bnbrpcs")
+	config.PolygonRPC, _ = beego.AppConfig.String("default::polygonrpc")
+	config.PolygonRPCs, _ = beego.AppConfig.Strings("default::polygonrpcs")
 	config.PoolCap, err = beego.AppConfig.Int("default::gethpool")
 	if err != nil {
 		log.Println(err.Error(), "err.Error() appconfig/appconfig.go:128")
@@ -225,6 +232,12 @@ func LoadInitConfig() {
 	config.KafkaProducerHost, _ = beego.AppConfig.String("kafka_producer::host")
 	config.KafkaProducerPort, _ = beego.AppConfig.String("kafka_producer::port")
 	config.KafkaProducerTopic, _ = beego.AppConfig.String("kafka_producer::topic")
+
+	config.NumPoolDepositWithdrawal, err = beego.AppConfig.Int("num_pool")
+	if err != nil {
+		log.Println(err.Error(), "err.Error() appconfig/appconfig.go:237")
+		config.NumPoolDepositWithdrawal = 50
+	}
 
 	log.Println("===== MintNFTContractAddress721 ===== : ", config.MintNFTContractAddress721)
 	log.Println("===== SaleNFTContractAddress721 ===== : ", config.SaleNFTContractAddress721)

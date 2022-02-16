@@ -2,8 +2,10 @@ package commonservice
 
 import (
 	"context"
+	"io/ioutil"
 	"log"
 	"math/big"
+	"strconv"
 	"worker-transaction/consts"
 	"worker-transaction/models"
 	"worker-transaction/restapi/responses"
@@ -11,23 +13,28 @@ import (
 )
 
 func GetLatestIndexBlock() *big.Int {
-	//tItem, err := models.GetBsNftOriginal().BsGetItem(consts.BS_COMMON_VALUE, []byte(consts.COMMON_LATEST_INDEX_BLOCK))
-	//if err != nil {
-	//	log.Println(err.Error(), "err.Error() services/commonservice/common_service.go:12")
-	//	return GetCurrentBlock()
-	//}
-	//
-	//latestBlockIndex, err := strconv.ParseInt(string(tItem.GetValue()), 10, 64)
-	//if err != nil {
-	//	log.Println(err.Error(), "err.Error() services/commonservice/common_service.go:19")
-	//	return GetCurrentBlock()
-	//}
-	//
-	//return big.NewInt(latestBlockIndex)
+	data, err := ioutil.ReadFile("/home/dieptv/GolandProjects/worker-transaction/last_index.txt")
+	if err != nil {
+		log.Println(err.Error(), "err.Error() services/commonservice/common_service.go:17")
+		return GetCurrentBlock()
+	}
+
+	latestBlockIndex, err := strconv.ParseInt(string(data), 10, 64)
+	if err != nil {
+		log.Println(err.Error(), "err.Error() services/commonservice/common_service.go:24")
+		return GetCurrentBlock()
+	}
+
+	return big.NewInt(latestBlockIndex)
 	return nil
 }
 
 func PutLatestIndexBlock(latestBlockIndex *big.Int) {
+	err := ioutil.WriteFile("/home/dieptv/GolandProjects/worker-transaction/last_index.txt", []byte(latestBlockIndex.String()), 0644)
+	if err != nil {
+		log.Println(err.Error(), "err.Error() services/commonservice/common_service.go:35")
+	}
+
 	//models.GetBsNftOriginal().BsPutItem(consts.BS_COMMON_VALUE, &generic.TItem{
 	//	Key:   []byte(consts.COMMON_LATEST_INDEX_BLOCK),
 	//	Value: []byte(latestBlockIndex.String()),

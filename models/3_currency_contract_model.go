@@ -27,7 +27,7 @@ func (c *CurrencyContract) GetFromKey(key int) (*CurrencyContract, error) {
 	if err != nil {
 		return nil, err
 	}
-	rows.Scan(&u.Name, &u.Symbol, &u.Address, &u.Chain, &u.Decimal, &u.Img)
+	rows.Scan(&u.Id, &u.Name, &u.Symbol, &u.Address, &u.Chain, &u.Decimal, &u.Img)
 	return u, nil
 }
 
@@ -62,7 +62,7 @@ func (c *CurrencyContract) GetAll() ([]CurrencyContract, int, error) {
 	}
 	for rows.Next() {
 		u := CurrencyContract{}
-		err := rows.Scan(&u.Name, &u.Symbol, &u.Address, &u.Chain, &u.Decimal, &u.Img)
+		err := rows.Scan(&u.Id, &u.Name, &u.Symbol, &u.Address, &u.Chain, &u.Decimal, &u.Img)
 		if err != nil {
 			return nil, 0, err
 		}

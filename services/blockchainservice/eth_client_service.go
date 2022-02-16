@@ -2,6 +2,7 @@ package blockchainservice
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"math/big"
 	"sync"
@@ -567,9 +568,10 @@ func newClient(cli *ethclient.Client) *MyClient {
 
 func GetEthClientService(chain string) *ethclient.Client {
 	ethClient.Do(func() {
+		fmt.Println(getEndpoint(chain))
 		client, err := ethclient.Dial(getEndpoint(chain))
 		if err != nil {
-			log.Println(err.Error(), "err.Error() models/global.go:45")
+			log.Println(err.Error(), "err.Error() eth_client_service.go:574")
 			log.Println("can't connect client")
 		}
 		blockchainClient = client
@@ -594,6 +596,8 @@ func getEndpoint(chain string) string {
 	switch chain {
 	case consts.BSC_CHAIN:
 		return appconfig.Config.BnbRPC
+	case consts.POLYGON_CHAIN:
+		return appconfig.Config.PolygonRPC
 	default:
 		return appconfig.Config.BnbRPC
 	}
@@ -603,6 +607,8 @@ func getEndpointNew(chain string) string {
 	switch chain {
 	case consts.BSC_CHAIN:
 		return getRandomInListBsc()
+	case consts.POLYGON_CHAIN:
+		return getRandomInListPolygon()
 	default:
 		return appconfig.Config.BnbRPC
 	}
@@ -616,4 +622,38 @@ func getRandomInListBsc() string {
 		log.Println("req: ", req)
 	}
 	return appconfig.Config.BnbRPCS[req%uint64(len(appconfig.Config.BnbRPCS))]
+}
+
+func getRandomInListPolygon() string {
+	lockReq.Lock()
+	defer lockReq.Unlock()
+	req++
+	if req%1000 == 0 {
+		log.Println("req: ", req)
+	}
+	return appconfig.Config.PolygonRPCs[req%uint64(len(appconfig.Config.PolygonRPCs))]
+}
+
+func getGas(input []byte, price *big.Int, fromAddress, contractAddress common.Address) (
+	gasLimit uint64, gasPrice *big.Int, err error) {
+	//gasLimit, err = GetEthClientService().EstimateGas(context.Background(), ethereum.CallMsg{
+	//From:  fromAddress,
+	//To:    &contractAddress,
+	//Data:  input,
+	//Value: price,
+	//})
+	//if err != nil {
+	//	log.Println(err.Error(), "err.Error() getGas")
+	//	return
+	//}
+	gasLimit = consts.BSC_GAS_LIMIT
+	gasPrice, err = GetEthClientService(consts.BSC_CHAIN).SuggestGasPrice(context.Background())
+	if err != nil {
+		gasPrice, err = GetNewEthClientService(consts.BSC_CHAIN).SuggestGasPrice(context.Background())
+		if err != nil {
+			log.Println(err.Error(), "err.Error() getGas")
+			return
+		}
+	}
+	return
 }

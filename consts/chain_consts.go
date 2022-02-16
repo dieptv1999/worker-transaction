@@ -8,4 +8,8 @@ const (
 	BSC_DECIMAL = 18
 
 	BSC_GAS_LIMIT = 250000
+
+	POLYGON_CHAIN = "polygon"
+
+	POLYGON_COIN_BASE = "MATIC"
 )
