@@ -87,15 +87,17 @@ func WatchEventErc20(chain string, fn CallbackFunc) {
 
 			log.Println("===== ETH READ TO FAST =====")
 			log.Println(latestBlockIndex, "latestBlockIndex erc20.go:84")
-			time.Sleep(2 * time.Second)
+			time.Sleep(time.Second)
 			continue
 		}
 
-		// logrus.WithFields(logrus.Fields{
-		// 	"Block Number": block.Number().String(),
-		// 	"Hash":         block.Hash().Hex(),
-		// 	"Trans len":    block.Transactions().Len(),
-		// }).Info("=== header log === erc20.go:93")
+		logrus.WithFields(logrus.Fields{
+			"Block Number": block.Number().String(),
+			"Hash":         block.Hash().Hex(),
+			"Trans len":    block.Transactions().Len(),
+		}).Info("=== header log === erc20.go:98")
+
+		// co the check exist cua account
 
 		listTrans := block.Transactions()
 		for _, tx := range listTrans {
@@ -109,13 +111,13 @@ func WatchEventErc20(chain string, fn CallbackFunc) {
 					TransferCoinbase(txClone, chain)
 				})
 			} else {
-				m.RLock()
-				_, exist := mapContract[fmt.Sprintf("%s", tx.To())]
-				m.RUnlock()
+				// m.RLock()
+				// _, exist := mapContract[fmt.Sprintf("%s", tx.To())]
+				// m.RUnlock()
 
-				if !exist {
-					continue
-				}
+				// if !exist {
+				// 	continue
+				// }
 				wkPool.Submit(func() {
 					inputData := common.Bytes2Hex(txClone.Data())
 					strHashFunc := inputData[:8]
@@ -135,15 +137,15 @@ func WatchEventErc20(chain string, fn CallbackFunc) {
 }
 
 func TransferTokenERC20(trans *types.Transaction, chain string) {
-	log.Println("=== Start Transfer ERC20 === erc20.go 138")
-	defer log.Println("=== End Transfer ERC20 === erc20.go 139")
-	log.Println(trans.Hash(), "trans erc20.go:140")
+	log.Println("=== Start Transfer ERC20 === erc20.go 139")
+	defer log.Println("=== End Transfer ERC20 === erc20.go 140")
+	// log.Println(trans.Hash(), "trans erc20.go:140")
 
 	tx, err := blockchainservice.GetEthClientService(chain).TransactionReceipt(context.Background(), trans.Hash())
 	if err != nil {
 		tx, err = blockchainservice.GetNewEthClientService(chain).TransactionReceipt(context.Background(), trans.Hash())
 		if err != nil {
-			log.Println(err.Error(), "err.Error() cmd/worker/erc20/erc20.go:27")
+			log.Println(err.Error(), "err.Error() erc20.go:147")
 			return
 		}
 	}
@@ -167,7 +169,7 @@ func TransferTokenERC20(trans *types.Transaction, chain string) {
 func TransferCoinbase(trans *types.Transaction, chain string) {
 	log.Println("=== Start Transfer Coinbase === erc20.go 169")
 	defer log.Println("=== End Transfer Coinbase === erc20.go 170")
-	log.Println(trans.Hash(), "trans erc20.go:170")
+	// log.Println(trans.Hash(), "trans erc20.go:170")
 
 	toAddress := trans.To().Hex()
 	value := trans.Value()
@@ -175,5 +177,5 @@ func TransferCoinbase(trans *types.Transaction, chain string) {
 	logrus.WithFields(logrus.Fields{
 		"Address": toAddress,
 		"Value":   value.String(),
-	}).Info("=== print data transfer conbase === erc20.go:177")
+	}).Info("=== print data transfer conbase === erc20.go:180")
 }

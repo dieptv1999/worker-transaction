@@ -23,11 +23,9 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	databaseservice.ConnectDatabase()
-
 	defer func() {
-		if databaseservice.Database != nil {
-			databaseservice.Database.Close()
+		if databaseservice.GetDatabase() != nil {
+			databaseservice.GetDatabase().Db.Close()
 		}
 	}()
 

@@ -2,11 +2,15 @@ package databaseservice
 
 import (
 	"bytes"
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/lib/pq"
+	"log"
+	"sync"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 const (
@@ -17,27 +21,41 @@ const (
 	dbname   = "wallet_crypto"
 )
 
+type Store struct {
+	*Queries
+	Db *sql.DB
+}
+
 var (
-	Database *sql.DB
+	store    *Store
 	psqlInfo = fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
+	once sync.Once
 )
 
-func ConnectDatabase() {
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
+func GetDatabase() *Store {
+	once.Do(func() {
+		db, err := sql.Open("postgres", psqlInfo)
+		if err != nil {
+			log.Println(err.Error(), "err.Error() services/databaseservice/databaseservice.go:29")
+			panic(err)
+		}
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
+		err = db.Ping()
+		if err != nil {
+			log.Println(err.Error(), "err.Error() services/databaseservice/databaseservice.go:34")
+			panic(err)
+		}
 
-	fmt.Println("Successfully connected!")
+		fmt.Println("Successfully connected!")
 
-	Database = db
+		store = &Store{
+			Db:      db,
+			Queries: New(db),
+		}
+	})
+	return store
 }
 
 func WaitForNotification() {
@@ -73,4 +91,23 @@ func WaitForNotification() {
 			break
 		}
 	}
+}
+
+func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
+	tx, err := store.Db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	q := New(tx)
+	err = fn(q)
+
+	if err != nil {
+		if rbErr := tx.Rollback(); rbErr != nil {
+			return fmt.Errorf("tx err: %v, rb err: %v", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
 }

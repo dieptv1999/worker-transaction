@@ -1,22 +1,16 @@
-package test
+package tests
 
-import (
-	"net/http"
-	"testing"
-)
+// func TestLoginHandler(t *testing.T) {
+// resp := responses.ResponseCommonSingle{}
 
-func init() {
-	// lang.InitLang()
-}
+// err := utils.TestHandlerUnMarshalResp("POST", "/login", "form", user, &resp)
+// if err != nil {
+// 	t.Errorf("TestLoginHandler: %v\n", err)
+// 	return
+// }
 
-func TestWithdrawal(t *testing.T) {
-
-	req, _ := http.NewRequest("GET", "/products", nil)
-	response := executeRequest(req)
-
-	checkResponseCode(t, http.StatusOK, response.Code)
-
-	if body := response.Body.String(); body != "[]" {
-		t.Errorf("Expected an empty array. Got %s", body)
-	}
-}
+// if resp.Errno != "0" {
+// 	t.Errorf("TestLoginHandler: response is not expected\n")
+// 	return
+// }
+// }
