@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	host     = "localhost"
+	host     = "117.5.33.157"
 	port     = 5432
 	user     = "dieptv"
 	password = "dieptv"
